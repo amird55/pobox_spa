@@ -1,11 +1,42 @@
 const express = require('express');
-const port = 5533;
+const port = 5577;
 const app = express();
 app.use(express.json());
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: false}));
+
+//------------------------------------------------
+let AllData=[];
 
 //------------------------------------------------
 app.get("/",(req, res) => {
     res.sendFile("./Views/spa_main.html", {root: __dirname});
+});
+app.get("/List",(req, res) => {
+    res.send(AllData).json();
+});
+app.post("/Add",(req, res) => {
+    let line={};
+    line.name = req.body.name;
+    line.phone = req.body.phone;
+    line.pobox = req.body.pob;
+    AllData.push(line);
+    console.log(req.body);
+    res.send("Ready to Add EndPoint");
+});
+app.post("/Add2",(req, res) => {
+    let line={};
+    line.name = req.body.name;
+    line.phone = req.body.phone;
+    line.pobox = req.body.pob;
+    AllData.push(line);
+    line={};
+    line.name = req.body.name2;
+    line.phone = req.body.phone2;
+    line.pobox = req.body.pob;
+    AllData.push(line);
+    res.send("Ready to Add EndPoint");
 });
 
 //------------------------------------------------
