@@ -70,9 +70,6 @@
         // console.log("response=",response);
         let data = await response.json();
         console.log("data=",data);
-        for(let k in data){
-            data[k].idxOnServer=k;
-        }
         raw_data = data;
         CreateTble();
     }

@@ -14,7 +14,12 @@ app.get("/",(req, res) => {
     res.sendFile("./Views/spa_main.html", {root: __dirname});
 });
 app.get("/List",(req, res) => {
-    res.send(AllData).json();
+    let data=AllData;
+    for(let k in data){
+        data[k].idxOnServer=k;
+    }
+
+    res.send(data).json();
 });
 app.post("/Add",(req, res) => {
     let line={};
