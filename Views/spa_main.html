@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>my SPA</title>
+    <style>
+        td,th{
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
 <h1>
@@ -14,6 +19,10 @@
     <input type="text" name="pob"   id="pob"   placeholder="pob" />
     <button onclick="addNewLine();" >send</button>
 </div>
+<br/>
+<input type="search" id="filterField" oninput="CreateTble();">
+<br/>
+<button onclick="getList();">fetch</button>
 <table>
     <thead>
     <tr>
@@ -25,6 +34,42 @@
     <tbody id="mainTable">  </tbody>
 </table>
 <script>
+    let raw_data=[];
+    let srchTerm="";
+
+    function FilterData(el){
+        console.log("FilterData::",el);
+        if(srchTerm=="")
+            return true;
+        let reg=new RegExp(srchTerm,"i");
+        if(reg.test(el.name)){
+            return true;
+        }
+        return false;
+    }
+    function CreateTble(){
+        srchTerm=document.getElementById("filterField").value;
+        let data=raw_data.filter(FilterData);
+        let str="";
+        for(let line of data){
+            str+="<tr>";
+            str+="<td>"+line.name+"</td>";
+            str+=`<td>${line.phone}</td>`;
+            str+=`<td>${line.pobox}</td>`;
+            str+="</tr>";
+        }
+        document.getElementById("mainTable").innerHTML=str;
+    }
+
+    async function getList() {
+        let response = await fetch('/List');
+        // console.log("response=",response);
+        let data = await response.json();
+        console.log("data=",data);
+        raw_data = data;
+        CreateTble();
+    }
+
     async function addNewLine() {
         let name=document.getElementById("name").value;
         let phone=document.getElementById("phone").value;
@@ -37,9 +82,12 @@
             body: JSON.stringify({name: name, phone: phone, pob: pob})
             }
         );
-        let data = await response.json();
-        console.log(data);
+        // let data = await response.json();
+        // console.log(data);
+        getList();
     }
+
+    getList();
 </script>
 </body>
 </html>
