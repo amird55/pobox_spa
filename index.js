@@ -40,7 +40,8 @@ app.post("/Add2",(req, res) => {
 });
 app.post("/Delete",(req, res) => {
     let idx= req.body.idx;
-    AllData.pop(idx);
+    console.log("del",idx);
+    AllData.splice(Number(idx),1);
     res.send("Ready to Delete");
 });
 
