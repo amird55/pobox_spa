@@ -38,6 +38,11 @@ app.post("/Add2",(req, res) => {
     AllData.push(line);
     res.send("Ready to Add EndPoint");
 });
+app.post("/Delete",(req, res) => {
+    let idx= req.body.idx;
+    AllData.pop(idx);
+    res.send("Ready to Delete");
+});
 
 //------------------------------------------------
 app.listen(port, () => {            //server starts listening for any attempts from a client to connect at port: {port}
