@@ -49,6 +49,13 @@ app.post("/Delete",(req, res) => {
     AllData.splice(Number(idx),1);
     res.send("Ready to Delete");
 });
+app.post("/Update",(req, res) => {
+    let idx=req.body.idx;
+    AllData[idx].name = req.body.name;
+    AllData[idx].phone = req.body.phone;
+    AllData[idx].pobox = req.body.pob;
+    res.send("updated");
+});
 
 //------------------------------------------------
 app.listen(port, () => {            //server starts listening for any attempts from a client to connect at port: {port}

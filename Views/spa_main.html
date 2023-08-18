@@ -25,6 +25,8 @@
 <button onclick="getList();">fetch</button>
 <hr/>
 <button onclick="deleteLine();">delete</button>
+<hr/>
+<button onclick="editLine(1);">Edit</button>
 <table>
     <thead>
     <tr>
@@ -94,6 +96,24 @@
         let objToServer={};
         objToServer.idx=id;
         let response = await fetch('/Delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(objToServer)
+            }
+        );
+        // let data = await response.json();
+        // console.log(data);
+        getList();
+    }
+    async function editLine(id) {
+        let objToServer={};
+        objToServer.idx=id;
+        objToServer.name=document.getElementById("name").value;
+        objToServer.phone=document.getElementById("phone").value;
+        objToServer.pob=document.getElementById("pob").value;
+        let response = await fetch('/Update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
