@@ -21,14 +21,17 @@
 </div>
 <br/>
 <input type="search" id="filterField" oninput="CreateTble();">
-<br/>
+<hr/>
 <button onclick="getList();">fetch</button>
+<hr/>
+<button onclick="deleteLine();">delete</button>
 <table>
     <thead>
     <tr>
         <th>שם</th>
         <th>טלפון</th>
         <th>תיבה</th>
+        <th></th>
     </tr>
     </thead>
     <tbody id="mainTable">  </tbody>
@@ -56,6 +59,7 @@
             str+="<td>"+line.name+"</td>";
             str+=`<td>${line.phone}</td>`;
             str+=`<td>${line.pobox}</td>`;
+            str+=`<td><button onclick="deleteLine(${line.idxOnServer});">delete</button></td>`;
             str+="</tr>";
         }
         document.getElementById("mainTable").innerHTML=str;
@@ -66,6 +70,9 @@
         // console.log("response=",response);
         let data = await response.json();
         console.log("data=",data);
+        for(let k in data){
+            data[k].idxOnServer=k;
+        }
         raw_data = data;
         CreateTble();
     }
@@ -80,6 +87,21 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({name: name, phone: phone, pob: pob})
+            }
+        );
+        // let data = await response.json();
+        // console.log(data);
+        getList();
+    }
+    async function deleteLine(id) {
+        let objToServer={};
+        objToServer.idx=id;
+        let response = await fetch('/Delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(objToServer)
             }
         );
         // let data = await response.json();
